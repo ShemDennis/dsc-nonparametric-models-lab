@@ -1,0 +1,278 @@
+[
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "subprocess",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "subprocess",
+        "description": "subprocess",
+        "detail": "subprocess",
+        "documentation": {}
+    },
+    {
+        "label": "Repo",
+        "importPath": "git",
+        "description": "git",
+        "isExtraImport": true,
+        "detail": "git",
+        "documentation": {}
+    },
+    {
+        "label": "Git",
+        "importPath": "git",
+        "description": "git",
+        "isExtraImport": true,
+        "detail": "git",
+        "documentation": {}
+    },
+    {
+        "label": "GitCommandError",
+        "importPath": "git",
+        "description": "git",
+        "isExtraImport": true,
+        "detail": "git",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "get_notebook_json",
+        "kind": 2,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "def get_notebook_json(filename=\"index.ipynb\"):\n    with open(filename, 'r') as f:\n        data = json.load(f)\n    return data\ndef is_markdown_cell(cell):\n    return cell[\"cell_type\"] == \"markdown\"\ndef contains_tag(line):\n    # returns true for '# __SOLUTION__' or '#__SOLUTION__'\n    return any(tag in line.strip().split(\" \") for tag in [SOLUTION_TAG, f\"#{SOLUTION_TAG}\"])\ndef is_solution_cell(cell):",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "is_markdown_cell",
+        "kind": 2,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "def is_markdown_cell(cell):\n    return cell[\"cell_type\"] == \"markdown\"\ndef contains_tag(line):\n    # returns true for '# __SOLUTION__' or '#__SOLUTION__'\n    return any(tag in line.strip().split(\" \") for tag in [SOLUTION_TAG, f\"#{SOLUTION_TAG}\"])\ndef is_solution_cell(cell):\n    if cell[\"cell_type\"] != \"code\":\n        return False\n    # does any line of the cell have the SOLUTION tag anywhere in it\n    found_tag = [True for line in cell[\"source\"] if contains_tag(line)]",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "contains_tag",
+        "kind": 2,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "def contains_tag(line):\n    # returns true for '# __SOLUTION__' or '#__SOLUTION__'\n    return any(tag in line.strip().split(\" \") for tag in [SOLUTION_TAG, f\"#{SOLUTION_TAG}\"])\ndef is_solution_cell(cell):\n    if cell[\"cell_type\"] != \"code\":\n        return False\n    # does any line of the cell have the SOLUTION tag anywhere in it\n    found_tag = [True for line in cell[\"source\"] if contains_tag(line)]\n    return bool(len(found_tag))\n# removes __SOLUTON__ line from tagged code cells",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "is_solution_cell",
+        "kind": 2,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "def is_solution_cell(cell):\n    if cell[\"cell_type\"] != \"code\":\n        return False\n    # does any line of the cell have the SOLUTION tag anywhere in it\n    found_tag = [True for line in cell[\"source\"] if contains_tag(line)]\n    return bool(len(found_tag))\n# removes __SOLUTON__ line from tagged code cells\ndef untag(cell):\n    if cell[\"cell_type\"] != \"code\":\n        return cell",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "untag",
+        "kind": 2,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "def untag(cell):\n    if cell[\"cell_type\"] != \"code\":\n        return cell\n    source = [line for line in cell[\"source\"] if not contains_tag(line)]\n    cell.update({\"source\": source})\n    return cell\ndef create_master_notebook(nb):\n    cells = [\n        cell for cell in nb[\"cells\"] if for_master(cell)\n    ]",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "create_master_notebook",
+        "kind": 2,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "def create_master_notebook(nb):\n    cells = [\n        cell for cell in nb[\"cells\"] if for_master(cell)\n    ]\n    nb.update({\"cells\": cells})\n    return nb\ndef for_master(cell):\n    return is_markdown_cell(cell) or not is_solution_cell(cell)\ndef for_sol(cell):\n    return is_markdown_cell(cell) or is_solution_cell(cell)",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "for_master",
+        "kind": 2,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "def for_master(cell):\n    return is_markdown_cell(cell) or not is_solution_cell(cell)\ndef for_sol(cell):\n    return is_markdown_cell(cell) or is_solution_cell(cell)\ndef create_sol_notebook(nb):\n    cells = [\n        untag(cell) for cell in nb[\"cells\"] if for_sol(cell)\n    ]\n    nb.update({\"cells\": cells})\n    return nb",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "for_sol",
+        "kind": 2,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "def for_sol(cell):\n    return is_markdown_cell(cell) or is_solution_cell(cell)\ndef create_sol_notebook(nb):\n    cells = [\n        untag(cell) for cell in nb[\"cells\"] if for_sol(cell)\n    ]\n    nb.update({\"cells\": cells})\n    return nb\ndef write_new_notebook(notebook):\n    f = open(\"index.ipynb\", \"w\")",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "create_sol_notebook",
+        "kind": 2,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "def create_sol_notebook(nb):\n    cells = [\n        untag(cell) for cell in nb[\"cells\"] if for_sol(cell)\n    ]\n    nb.update({\"cells\": cells})\n    return nb\ndef write_new_notebook(notebook):\n    f = open(\"index.ipynb\", \"w\")\n    f.write(json.dumps(notebook))\n    f.close()",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "write_new_notebook",
+        "kind": 2,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "def write_new_notebook(notebook):\n    f = open(\"index.ipynb\", \"w\")\n    f.write(json.dumps(notebook))\n    f.close()\ndef notebook_to_markdown():\n    subprocess.call([\"jupyter\", \"nbconvert\", \"index.ipynb\",  \"--to\", \"markdown\"])\n    subprocess.call([\"mv\", \"index.md\", \"README.md\"])\ndef sync_branch(repo, branch, notebook, msg=\"Curriculum Auto-Sync\"):\n    # switch to branch, do nothing if does not exist\n    try:",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "notebook_to_markdown",
+        "kind": 2,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "def notebook_to_markdown():\n    subprocess.call([\"jupyter\", \"nbconvert\", \"index.ipynb\",  \"--to\", \"markdown\"])\n    subprocess.call([\"mv\", \"index.md\", \"README.md\"])\ndef sync_branch(repo, branch, notebook, msg=\"Curriculum Auto-Sync\"):\n    # switch to branch, do nothing if does not exist\n    try:\n        repo.git.checkout(branch)\n        branch_exists = True\n    except GitCommandError:\n        branch_exists = False",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "sync_branch",
+        "kind": 2,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "def sync_branch(repo, branch, notebook, msg=\"Curriculum Auto-Sync\"):\n    # switch to branch, do nothing if does not exist\n    try:\n        repo.git.checkout(branch)\n        branch_exists = True\n    except GitCommandError:\n        branch_exists = False\n    if branch_exists:\n        # get all files from curriculum branch and put onto this branch,\n        # (the notebook and readme will be overwritten in the subsequent steps)",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "get_commit_message",
+        "kind": 2,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "def get_commit_message(repo):\n    # get commit message from repo or custom flag\n    sys_args = list(sys.argv)\n    i = sys_args.index(CUSTOM_COMMIT_MSG_FLAG) if CUSTOM_COMMIT_MSG_FLAG in sys_args else None\n    return sys_args[i + 1] if i else repo.head.commit.message\ndef add_and_commit(repo, commit_msg):\n    repo.git.add(\".\")\n    try:\n        repo.git.commit(\"-m\", commit_msg)\n    except GitCommandError:",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "add_and_commit",
+        "kind": 2,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "def add_and_commit(repo, commit_msg):\n    repo.git.add(\".\")\n    try:\n        repo.git.commit(\"-m\", commit_msg)\n    except GitCommandError:\n        print(\"Nothing to commit\")\n# RUN\n# ======================\n# Identity\ngit_ssh_identity_file = os.path.expanduser('~/.ssh/id_rsa')",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "SOLUTION_TAG",
+        "kind": 5,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "SOLUTION_TAG = \"__SOLUTION__\"\nCURRICULUM_BRANCH = \"curriculum\"\nMASTER_BRANCH = \"master\"\nSOLUTION_BRANCH = \"solution\"\nCUSTOM_COMMIT_MSG_FLAG = \"-m\"\n# FUNCTIONS\ndef get_notebook_json(filename=\"index.ipynb\"):\n    with open(filename, 'r') as f:\n        data = json.load(f)\n    return data",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "CURRICULUM_BRANCH",
+        "kind": 5,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "CURRICULUM_BRANCH = \"curriculum\"\nMASTER_BRANCH = \"master\"\nSOLUTION_BRANCH = \"solution\"\nCUSTOM_COMMIT_MSG_FLAG = \"-m\"\n# FUNCTIONS\ndef get_notebook_json(filename=\"index.ipynb\"):\n    with open(filename, 'r') as f:\n        data = json.load(f)\n    return data\ndef is_markdown_cell(cell):",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "MASTER_BRANCH",
+        "kind": 5,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "MASTER_BRANCH = \"master\"\nSOLUTION_BRANCH = \"solution\"\nCUSTOM_COMMIT_MSG_FLAG = \"-m\"\n# FUNCTIONS\ndef get_notebook_json(filename=\"index.ipynb\"):\n    with open(filename, 'r') as f:\n        data = json.load(f)\n    return data\ndef is_markdown_cell(cell):\n    return cell[\"cell_type\"] == \"markdown\"",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "SOLUTION_BRANCH",
+        "kind": 5,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "SOLUTION_BRANCH = \"solution\"\nCUSTOM_COMMIT_MSG_FLAG = \"-m\"\n# FUNCTIONS\ndef get_notebook_json(filename=\"index.ipynb\"):\n    with open(filename, 'r') as f:\n        data = json.load(f)\n    return data\ndef is_markdown_cell(cell):\n    return cell[\"cell_type\"] == \"markdown\"\ndef contains_tag(line):",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "CUSTOM_COMMIT_MSG_FLAG",
+        "kind": 5,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "CUSTOM_COMMIT_MSG_FLAG = \"-m\"\n# FUNCTIONS\ndef get_notebook_json(filename=\"index.ipynb\"):\n    with open(filename, 'r') as f:\n        data = json.load(f)\n    return data\ndef is_markdown_cell(cell):\n    return cell[\"cell_type\"] == \"markdown\"\ndef contains_tag(line):\n    # returns true for '# __SOLUTION__' or '#__SOLUTION__'",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "git_ssh_identity_file",
+        "kind": 5,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "git_ssh_identity_file = os.path.expanduser('~/.ssh/id_rsa')\ngit_ssh_cmd = f'ssh -i {git_ssh_identity_file}'\nGit().custom_environment(GIT_SSH_COMMAND=git_ssh_cmd)\nrepo = Repo(os.getcwd())\n# handling for updated main branch naming convention ensuring correct branch name\ntry:\n    repo.git.checkout('main')\n    MASTER_BRANCH = 'main'\nexcept GitCommandError:\n    print('The main branch is not named \"main\"')",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "git_ssh_cmd",
+        "kind": 5,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "git_ssh_cmd = f'ssh -i {git_ssh_identity_file}'\nGit().custom_environment(GIT_SSH_COMMAND=git_ssh_cmd)\nrepo = Repo(os.getcwd())\n# handling for updated main branch naming convention ensuring correct branch name\ntry:\n    repo.git.checkout('main')\n    MASTER_BRANCH = 'main'\nexcept GitCommandError:\n    print('The main branch is not named \"main\"')\n    MASTER_BRANCH = 'master'",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "repo",
+        "kind": 5,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "repo = Repo(os.getcwd())\n# handling for updated main branch naming convention ensuring correct branch name\ntry:\n    repo.git.checkout('main')\n    MASTER_BRANCH = 'main'\nexcept GitCommandError:\n    print('The main branch is not named \"main\"')\n    MASTER_BRANCH = 'master'\ntry:\n    repo.git.checkout(CURRICULUM_BRANCH)",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "commit_message",
+        "kind": 5,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "commit_message = get_commit_message(repo)\nnotebook_to_markdown()\nadd_and_commit(repo, commit_message)\nprint(f\"pushing to remote {CURRICULUM_BRANCH} branch\")\nrepo.git.push(\"origin\", CURRICULUM_BRANCH)\nnotebook_json   = get_notebook_json()\nmaster_notebook = create_master_notebook(dict(notebook_json)) # pass a copy\nsol_notebook    = create_sol_notebook(dict(notebook_json)) # pass a copy\nsync_branch(repo, MASTER_BRANCH, master_notebook, msg=commit_message)\nsync_branch(repo, SOLUTION_BRANCH, sol_notebook, msg=commit_message)",
+        "detail": "splitter",
+        "documentation": {}
+    },
+    {
+        "label": "master_notebook",
+        "kind": 5,
+        "importPath": "splitter",
+        "description": "splitter",
+        "peekOfCode": "master_notebook = create_master_notebook(dict(notebook_json)) # pass a copy\nsol_notebook    = create_sol_notebook(dict(notebook_json)) # pass a copy\nsync_branch(repo, MASTER_BRANCH, master_notebook, msg=commit_message)\nsync_branch(repo, SOLUTION_BRANCH, sol_notebook, msg=commit_message)\n# leave user on curriculum branch\nrepo.git.checkout(CURRICULUM_BRANCH)",
+        "detail": "splitter",
+        "documentation": {}
+    }
+]
